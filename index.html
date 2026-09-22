@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HuyDung">
+<meta name="description" content="Phần mềm quản lý hàng đi bán HUY DUNG - Theo dõi hàng hóa, hàng đi, hàng về và tổng kết doanh thu">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23c9923c'/%3E%3Cstop offset='100%25' style='stop-color:%234d8b7a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='62' font-family='Arial' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3EHD%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23c9923c'/%3E%3Cstop offset='100%25' style='stop-color:%234d8b7a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='62' font-family='Arial' font-size='42' font-weight='bold' fill='white' text-anchor='middle'%3EHD%3C/text%3E%3C/svg%3E">
+<title>Quản Lý Hàng Đi Bán - HUY DUNG</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-soft: #131a2e;
+  --card: #1e293b;
+  --card-hover: #243044;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --accent: #f59e0b;
+  --accent-soft: rgba(245, 158, 11, 0.12);
+  --accent-strong: rgba(245, 158, 11, 0.25);
+  --accent2: #10b981;
+  --accent2-soft: rgba(16, 185, 129, 0.12);
+  --border: rgba(148, 163, 184, 0.12);
+  --border-strong: rgba(148, 163, 184, 0.2);
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.12);
+  --success: #22c55e;
+  --success-soft: rgba(34, 197, 94, 0.12);
+  --info: #3b82f6;
+  --info-soft: rgba(59, 130, 246, 0.12);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Spectral', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif;
+  background: var(--bg);
+  background-image: 
+    radial-gradient(ellipse at top left, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 24px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== APP HEADER ===== */
+.app-header {
+  background: linear-gradient(135deg, #1a2332 0%, #0f172a 100%);
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.app-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.app-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.app-title-group {
+  text-align: center;
+}
+
+.app-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+
+.app-subtitle {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+.date-display {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 12px 16px 0;
+  padding: 8px 14px;
+  background: var(--card);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ===== TAB NAVIGATION ===== */
+.tab-nav {
+  display: flex;
+  background: var(--card);
+  margin: 16px;
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 6px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.tab-btn .tab-icon {
+  font-size: 18px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-btn.active {
+  color: white;
+  background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.35);
+}
+
+.tab-content {
+  display: none;
+  padding: 0 16px;
+  animation: fadeInUp 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== SECTION TITLES ===== */
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 20px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 14px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+/* ===== FORMS ===== */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent);
+  background: var(--card);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+  color: white;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+}
+
+.btn-secondary {
+  background: var(--bg-soft);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-strong);
+  background: var(--card);
+}
+
+.btn-danger {
+  background: var(--danger-soft);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--danger);
+  padding: 6px 10px;
+  font-size: 12px;
+  min-height: 32px;
+  border-radius: 8px;
+}
+
+.btn-success {
+  background: var(--success-soft);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: var(--success);
+  padding: 6px 10px;
+  font-size: 12px;
+  min-height: 32px;
+  border-radius: 8px;
+}
+
+.btn-small {
+  padding: 8px 14px;
+  font-size: 12px;
+  min-height: 36px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ===== CATEGORY HEADERS ===== */
+.category-header {
+  background: linear-gradient(135deg, var(--accent-soft) 0%, transparent 100%);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-header:hover {
+  background: var(--accent-soft);
+}
+
+.category-header.return-type {
+  background: linear-gradient(135deg, var(--danger-soft) 0%, transparent 100%);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.category-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-header.return-type .category-name {
+  color: var(--danger);
+}
+
+.category-total {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.category-toggle {
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: 8px;
+}
+
+/* ===== ITEM LISTS ===== */
+.item-list {
+  margin-left: 10px;
+  border-left: 2px solid var(--border);
+  padding-left: 12px;
+  margin-bottom: 16px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.item-row:last-child {
+  border-bottom: none;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.item-detail {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.item-amount {
+  font-weight: 700;
+  color: var(--accent2);
+  margin-right: 10px;
+  text-align: right;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.item-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.collapsed .item-list {
+  display: none;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.badge-go {
+  background: var(--accent2-soft);
+  color: var(--accent2);
+}
+
+.badge-return {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ===== SUMMARY CARD ===== */
+.summary-card {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.summary-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+}
+
+.summary-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ===== STAT GRID ===== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.stat-box:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.stat-box .stat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-size: 16px;
+}
+
+.stat-box.go .stat-icon {
+  background: var(--accent2-soft);
+  color: var(--accent2);
+}
+
+.stat-box.return .stat-icon {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.stat-box .stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.stat-box .stat-value {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.stat-box.go .stat-value {
+  color: var(--accent2);
+}
+
+.stat-box.return .stat-value {
+  color: var(--danger);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.empty-state-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+/* ===== DATE SELECTOR ===== */
+.date-selector {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.current-viewing-date {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--info-soft) 100%);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.date-nav-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+/* ===== PRODUCT SOLD LIST ===== */
+.product-sold-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.product-sold-item:last-child {
+  border-bottom: none;
+}
+
+.product-sold-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-sold-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.product-sold-detail {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.product-sold-amount {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+.product-sold-amount.zero {
+  color: var(--muted);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: modalIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 18px 18px 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-body {
+  padding: 16px 18px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.modal-footer {
+  padding: 12px 18px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ===== DIVIDER ===== */
+hr.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 300;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.success {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: var(--success-soft);
+}
+
+/* ===== HIDDEN ===== */
+.hidden {
+  display: none !important;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 2px;
+}
+
+/* ===== INSTALL PROMPT ===== */
+.install-banner {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+  color: white;
+  padding: 14px 18px;
+  border-radius: 14px;
+  z-index: 250;
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.install-banner.show {
+  display: flex;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.install-banner-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.install-banner-btn {
+  background: white;
+  color: var(--accent);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.install-banner-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0.8;
+}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-header-inner">
+    <div class="app-logo">HD</div>
+    <div class="app-title-group">
+      <div class="app-title">QUẢN LÝ HÀNG ĐI BÁN</div>
+      <div class="app-subtitle">HUY DUNG</div>
+    </div>
+  </div>
+</div>
+
+<div class="date-display" id="currentDate"></div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="products">
+    <span class="tab-icon">📦</span>
+    <span>Hàng Hóa</span>
+  </button>
+  <button class="tab-btn" data-tab="go">
+    <span class="tab-icon">🚚</span>
+    <span>Hàng Đi</span>
+  </button>
+  <button class="tab-btn" data-tab="return">
+    <span class="tab-icon">🔄</span>
+    <span>Hàng Về</span>
+  </button>
+  <button class="tab-btn" data-tab="summary">
+    <span class="tab-icon">📊</span>
+    <span>Tổng Kết</span>
+  </button>
+</div>
+
+<!-- TAB: HÀNG HÓA -->
+<div class="tab-content active" id="tab-products">
+  <div class="section-title">
+    <span class="section-title-icon">📁</span>
+    Quản Lý Loại Hàng
+  </div>
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label">Tên loại hàng mới</label>
+      <input type="text" class="form-input" id="newCategory" placeholder="Ví dụ: Đồ uống, Thức ăn...">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addCategory()">
+      ➕ Thêm Loại Hàng
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="form-label" style="margin-bottom: 10px;">Danh sách loại hàng</div>
+    <div id="categoryList"></div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title">
+    <span class="section-title-icon">🏷️</span>
+    Quản Lý Mặt Hàng
+  </div>
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label">Chọn loại hàng</label>
+      <select class="form-select" id="productCategory"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tên mặt hàng</label>
+      <input type="text" class="form-input" id="productName" placeholder="Nhập tên mặt hàng...">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Đơn giá (VNĐ)</label>
+        <input type="number" class="form-input" id="productPrice" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Đơn vị</label>
+        <input type="text" class="form-input" id="productUnit" placeholder="cái/kg/chai">
+      </div>
+    </div>
+    <input type="hidden" id="editingProductId" value="">
+    <button class="btn btn-primary btn-block" onclick="saveProduct()" id="productSaveBtn">
+      ➕ Thêm Mặt Hàng
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="form-label" style="margin-bottom: 10px;">Danh sách mặt hàng theo loại</div>
+    <div id="productList"></div>
+  </div>
+</div>
+
+<!-- TAB: HÀNG ĐI -->
+<div class="tab-content" id="tab-go">
+  <div class="section-title">
+    <span class="section-title-icon">➕</span>
+    Thêm Hàng Đưa Đi
+  </div>
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label">Chọn loại hàng</label>
+      <select class="form-select" id="goCategory" onchange="updateGoProducts()"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Chọn mặt hàng</label>
+      <select class="form-select" id="goProduct"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Số lượng</label>
+        <input type="number" class="form-input" id="goQuantity" placeholder="0" min="0" step="0.1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Đơn giá (VNĐ)</label>
+        <input type="number" class="form-input" id="goPrice" placeholder="0" min="0">
+      </div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addGoItem()">
+      🚚 Thêm Hàng Đi
+    </button>
+  </div>
+
+  <div class="section-title">
+    <span class="section-title-icon">📋</span>
+    Danh Sách Hàng Đưa Đi
+  </div>
+  <div id="goList"></div>
+</div>
+
+<!-- TAB: HÀNG VỀ -->
+<div class="tab-content" id="tab-return">
+  <div class="section-title">
+    <span class="section-title-icon">↩️</span>
+    Thêm Hàng Trả Về
+  </div>
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label">Chọn loại hàng</label>
+      <select class="form-select" id="returnCategory" onchange="updateReturnProducts()"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Chọn mặt hàng</label>
+      <select class="form-select" id="returnProduct"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Số lượng</label>
+        <input type="number" class="form-input" id="returnQuantity" placeholder="0" min="0" step="0.1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Đơn giá (VNĐ)</label>
+        <input type="number" class="form-input" id="returnPrice" placeholder="0" min="0">
+      </div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addReturnItem()">
+      🔄 Thêm Hàng Về
+    </button>
+  </div>
+
+  <div class="section-title">
+    <span class="section-title-icon">📋</span>
+    Danh Sách Hàng Trả Về
+  </div>
+  <div id="returnList"></div>
+</div>
+
+<!-- TAB: TỔNG KẾT -->
+<div class="tab-content" id="tab-summary">
+  <div class="section-title">
+    <span class="section-title-icon">📅</span>
+    Tổng Kết Theo Ngày
+  </div>
+  
+  <div class="date-selector">
+    <div class="current-viewing-date" id="viewingDateDisplay">📅 Hôm nay</div>
+    <div class="date-nav-buttons">
+      <button class="btn btn-secondary btn-small" onclick="navigateDate(-1)">← Trước</button>
+      <button class="btn btn-primary btn-small" onclick="goToToday()">Hôm nay</button>
+      <button class="btn btn-secondary btn-small" onclick="navigateDate(1)">Sau →</button>
+    </div>
+    <div class="form-group" style="margin-bottom: 0;">
+      <input type="date" class="form-input" id="summaryDatePicker" onchange="changeSelectedDate(this.value)">
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-box go">
+      <div class="stat-icon">🚚</div>
+      <div class="stat-label">Tổng hàng đi</div>
+      <div class="stat-value" id="statGo">0</div>
+    </div>
+    <div class="stat-box return">
+      <div class="stat-icon">🔄</div>
+      <div class="stat-label">Tổng hàng về</div>
+      <div class="stat-value" id="statReturn">0</div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-label">💰 Tiền phải trả</div>
+    <div class="summary-value" id="totalPayable">0 VNĐ</div>
+    <div class="summary-sub">(Tổng hàng đi - Tổng hàng trả về)</div>
+  </div>
+
+  <div class="section-title">
+    <span class="section-title-icon">💹</span>
+    Tiền Từng Mặt Hàng Đã Bán
+  </div>
+  <div class="card">
+    <div id="productSoldList"></div>
+  </div>
+
+  <div style="margin-top: 16px; margin-bottom: 20px;">
+    <button class="btn btn-secondary btn-block" onclick="resetDayData()">
+      🗑️ Đặt Lại Dữ Liệu Ngày Này
+    </button>
+  </div>
+</div>
+
+<!-- Modal xác nhận -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-header">⚠️ Xác Nhận</div>
+    <div class="modal-body" id="confirmMessage">Bạn có chắc chắn muốn thực hiện?</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeConfirmModal()">Hủy</button>
+      <button class="btn btn-danger" id="confirmOkBtn" onclick="executeConfirm()">Đồng ý</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Install Banner -->
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-text">📱 Cài đặt ứng dụng để sử dụng nhanh hơn</div>
+  <button class="install-banner-btn" onclick="installApp()">Cài đặt</button>
+  <button class="install-banner-close" onclick="closeInstallBanner()">×</button>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============ PWA SETUP ============
+  let deferredPrompt = null;
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').catch(function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(function() {
+      document.getElementById('installBanner').classList.add('show');
+    }, 3000);
+  });
+
+  window.installApp = function() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function() {
+        deferredPrompt = null;
+        closeInstallBanner();
+      });
+    }
+  };
+
+  window.closeInstallBanner = function() {
+    document.getElementById('installBanner').classList.remove('show');
+  };
+
+  // ============ DATA MANAGEMENT ============
+  const STORAGE_KEY = 'huy_dung_quan_ly_hang_v2';
+  
+  let data = {
+    categories: [],
+    products: [],
+    goItems: [],
+    returnItems: []
+  };
+
+  let selectedDateKey = getTodayKey();
+  let confirmCallback = null;
+
+  function getTodayKey() {
+    return formatDateKey(new Date());
+  }
+
+  function formatDateKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function parseDateKey(key) {
+    const parts = key.split('-');
+    return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+  }
+
+  function formatDateDisplay(key) {
+    const date = parseDateKey(key);
+    const today = getTodayKey();
+    const yesterday = formatDateKey(new Date(Date.now() - 86400000));
+    const tomorrow = formatDateKey(new Date(Date.now() + 86400000));
+    
+    if (key === today) return '📅 Hôm nay';
+    if (key === yesterday) return '📅 Hôm qua';
+    if (key === tomorrow) return '📅 Ngày mai';
+    
+    const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+    return '📅 ' + date.toLocaleDateString('vi-VN', options);
+  }
+
+  function loadData() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        data = JSON.parse(saved);
+      }
+    } catch(e) {
+      console.error('Lỗi tải dữ liệu:', e);
+    }
+  }
+
+  function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+  }
+
+  function formatCurrency(num) {
+    if (isNaN(num) || num === null || num === undefined) num = 0;
+    return Math.round(num).toLocaleString('vi-VN') + ' ₫';
+  }
+
+  function formatNumber(num) {
+    if (isNaN(num) || num === null || num === undefined) return '0';
+    if (Number.isInteger(num)) return num.toString();
+    return parseFloat(num.toFixed(2)).toString();
+  }
+
+  function showToast(message, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast show' + (type === 'success' ? ' success' : '');
+    setTimeout(function() {
+      toast.classList.remove('show');
+    }, 2000);
+  }
+
+  // ============ DATE NAVIGATION ============
+  window.navigateDate = function(days) {
+    const current = parseDateKey(selectedDateKey);
+    current.setDate(current.getDate() + days);
+    selectedDateKey = formatDateKey(current);
+    updateDatePicker();
+    renderSummary();
+  };
+
+  window.goToToday = function() {
+    selectedDateKey = getTodayKey();
+    updateDatePicker();
+    renderSummary();
+  };
+
+  window.changeSelectedDate = function(value) {
+    if (value) {
+      selectedDateKey = value;
+      renderSummary();
+    }
+  };
+
+  function updateDatePicker() {
+    document.getElementById('summaryDatePicker').value = selectedDateKey;
+    document.getElementById('viewingDateDisplay').textContent = formatDateDisplay(selectedDateKey);
+  }
+
+  // ============ CATEGORY MANAGEMENT ============
+  window.addCategory = function() {
+    const input = document.getElementById('newCategory');
+    const name = input.value.trim();
+    if (!name) {
+      showToast('Vui lòng nhập tên loại hàng');
+      return;
+    }
+    if (data.categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+      showToast('Loại hàng này đã tồn tại');
+      return;
+    }
+    data.categories.push({ id: generateId(), name: name });
+    saveData();
+    input.value = '';
+    showToast('Đã thêm loại hàng!', 'success');
+    renderAll();
+  };
+
+  window.editCategory = function(id) {
+    const cat = data.categories.find(c => c.id === id);
+    if (!cat) return;
+    const newName = prompt('Sửa tên loại hàng:', cat.name);
+    if (newName && newName.trim()) {
+      cat.name = newName.trim();
+      saveData();
+      showToast('Đã cập nhật!', 'success');
+      renderAll();
+    }
+  };
+
+  window.deleteCategory = function(id) {
+    const cat = data.categories.find(c => c.id === id);
+    if (!cat) return;
+    
+    const hasProducts = data.products.some(p => p.categoryId === id);
+    const hasGo = data.goItems.some(g => g.categoryId === id);
+    const hasReturn = data.returnItems.some(r => r.categoryId === id);
+    
+    if (hasProducts || hasGo || hasReturn) {
+      showToast('Không thể xóa: Đã có giao dịch liên quan');
+      return;
+    }
+    
+    showConfirm('Bạn có chắc muốn xóa loại hàng "' + cat.name + '"?', function() {
+      data.categories = data.categories.filter(c => c.id !== id);
+      saveData();
+      showToast('Đã xóa!', 'success');
+      renderAll();
+    });
+  };
+
+  // ============ PRODUCT MANAGEMENT ============
+  window.saveProduct = function() {
+    const categoryId = document.getElementById('productCategory').value;
+    const name = document.getElementById('productName').value.trim();
+    const price = parseFloat(document.getElementById('productPrice').value) || 0;
+    const unit = document.getElementById('productUnit').value.trim() || 'cái';
+    const editingId = document.getElementById('editingProductId').value;
+
+    if (!categoryId) {
+      showToast('Vui lòng chọn loại hàng');
+      return;
+    }
+    if (!name) {
+      showToast('Vui lòng nhập tên mặt hàng');
+      return;
+    }
+
+    if (editingId) {
+      const prod = data.products.find(p => p.id === editingId);
+      if (prod) {
+        prod.categoryId = categoryId;
+        prod.name = name;
+        prod.price = price;
+        prod.unit = unit;
+      }
+      document.getElementById('editingProductId').value = '';
+      document.getElementById('productSaveBtn').innerHTML = '➕ Thêm Mặt Hàng';
+      showToast('Đã cập nhật mặt hàng!', 'success');
+    } else {
+      data.products.push({
+        id: generateId(),
+        categoryId: categoryId,
+        name: name,
+        price: price,
+        unit: unit
+      });
+      showToast('Đã thêm mặt hàng!', 'success');
+    }
+
+    saveData();
+    document.getElementById('productName').value = '';
+    document.getElementById('productPrice').value = '';
+    document.getElementById('productUnit').value = '';
+    renderAll();
+  };
+
+  window.editProduct = function(id) {
+    const prod = data.products.find(p => p.id === id);
+    if (!prod) return;
+    
+    document.getElementById('productCategory').value = prod.categoryId;
+    document.getElementById('productName').value = prod.name;
+    document.getElementById('productPrice').value = prod.price;
+    document.getElementById('productUnit').value = prod.unit;
+    document.getElementById('editingProductId').value = id;
+    document.getElementById('productSaveBtn').innerHTML = '✏️ Cập Nhật Mặt Hàng';
+    
+    document.getElementById('productName').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.deleteProduct = function(id) {
+    const prod = data.products.find(p => p.id === id);
+    if (!prod) return;
+    
+    const hasGo = data.goItems.some(g => g.productId === id);
+    const hasReturn = data.returnItems.some(r => r.productId === id);
+    
+    if (hasGo || hasReturn) {
+      showToast('Không thể xóa: Đã có giao dịch liên quan');
+      return;
+    }
+    
+    showConfirm('Bạn có chắc muốn xóa mặt hàng "' + prod.name + '"?', function() {
+      data.products = data.products.filter(p => p.id !== id);
+      saveData();
+      showToast('Đã xóa!', 'success');
+      renderAll();
+    });
+  };
+
+  // ============ GO ITEMS MANAGEMENT ============
+  window.updateGoProducts = function() {
+    const categoryId = document.getElementById('goCategory').value;
+    const select = document.getElementById('goProduct');
+    select.innerHTML = '';
+    
+    const products = data.products.filter(p => p.categoryId === categoryId);
+    products.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.name + ' (' + formatCurrency(p.price) + '/' + p.unit + ')';
+      opt.dataset.price = p.price;
+      select.appendChild(opt);
+    });
+    
+    if (products.length > 0) {
+      document.getElementById('goPrice').value = products[0].price;
+    }
+  };
+
+  document.addEventListener('change', function(e) {
+    if (e.target.id === 'goProduct') {
+      const opt = e.target.options[e.target.selectedIndex];
+      if (opt && opt.dataset.price) {
+        document.getElementById('goPrice').value = opt.dataset.price;
+      }
+    }
+    if (e.target.id === 'returnProduct') {
+      const opt = e.target.options[e.target.selectedIndex];
+      if (opt && opt.dataset.price) {
+        document.getElementById('returnPrice').value = opt.dataset.price;
+      }
+    }
+  });
+
+  window.addGoItem = function() {
+    const categoryId = document.getElementById('goCategory').value;
+    const productId = document.getElementById('goProduct').value;
+    const quantity = parseFloat(document.getElementById('goQuantity').value) || 0;
+    const price = parseFloat(document.getElementById('goPrice').value) || 0;
+
+    if (!categoryId || !productId) {
+      showToast('Vui lòng chọn mặt hàng');
+      return;
+    }
+    if (quantity <= 0) {
+      showToast('Vui lòng nhập số lượng lớn hơn 0');
+      return;
+    }
+
+    data.goItems.push({
+      id: generateId(),
+      productId: productId,
+      categoryId: categoryId,
+      quantity: quantity,
+      price: price,
+      timestamp: Date.now(),
+      dateKey: getTodayKey()
+    });
+
+    saveData();
+    document.getElementById('goQuantity').value = '';
+    showToast('Đã thêm hàng đi!', 'success');
+    renderAll();
+  };
+
+  window.deleteGoItem = function(id) {
+    showConfirm('Bạn có chắc muốn xóa mục hàng đi này?', function() {
+      data.goItems = data.goItems.filter(g => g.id !== id);
+      saveData();
+      showToast('Đã xóa!', 'success');
+      renderAll();
+    });
+  };
+
+  // ============ RETURN ITEMS MANAGEMENT ============
+  window.updateReturnProducts = function() {
+    const categoryId = document.getElementById('returnCategory').value;
+    const select = document.getElementById('returnProduct');
+    select.innerHTML = '';
+    
+    const products = data.products.filter(p => p.categoryId === categoryId);
+    products.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.name + ' (' + formatCurrency(p.price) + '/' + p.unit + ')';
+      opt.dataset.price = p.price;
+      select.appendChild(opt);
+    });
+    
+    if (products.length > 0) {
+      document.getElementById('returnPrice').value = products[0].price;
+    }
+  };
+
+  window.addReturnItem = function() {
+    const categoryId = document.getElementById('returnCategory').value;
+    const productId = document.getElementById('returnProduct').value;
+    const quantity = parseFloat(document.getElementById('returnQuantity').value) || 0;
+    const price = parseFloat(document.getElementById('returnPrice').value) || 0;
+
+    if (!categoryId || !productId) {
+      showToast('Vui lòng chọn mặt hàng');
+      return;
+    }
+    if (quantity <= 0) {
+      showToast('Vui lòng nhập số lượng lớn hơn 0');
+      return;
+    }
+
+    data.returnItems.push({
+      id: generateId(),
+      productId: productId,
+      categoryId: categoryId,
+      quantity: quantity,
+      price: price,
+      timestamp: Date.now(),
+      dateKey: getTodayKey()
+    });
+
+    saveData();
+    document.getElementById('returnQuantity').value = '';
+    showToast('Đã thêm hàng về!', 'success');
+    renderAll();
+  };
+
+  window.deleteReturnItem = function(id) {
+    showConfirm('Bạn có chắc muốn xóa mục hàng về này?', function() {
+      data.returnItems = data.returnItems.filter(r => r.id !== id);
+      saveData();
+      showToast('Đã xóa!', 'success');
+      renderAll();
+    });
+  };
+
+  // ============ RESET DAY DATA ============
+  window.resetDayData = function() {
+    const dateDisplay = formatDateDisplay(selectedDateKey);
+    showConfirm('Bạn có chắc muốn đặt lại dữ liệu ngày "' + dateDisplay + '"?\nDữ liệu hàng đi và hàng về của ngày này sẽ bị xóa.', function() {
+      data.goItems = data.goItems.filter(g => g.dateKey !== selectedDateKey);
+      data.returnItems = data.returnItems.filter(r => r.dateKey !== selectedDateKey);
+      saveData();
+      showToast('Đã đặt lại dữ liệu!', 'success');
+      renderAll();
+    });
+  };
+
+  // ============ CONFIRM MODAL ============
+  function showConfirm(message, callback) {
+    document.getElementById('confirmMessage').textContent = message;
+    confirmCallback = callback;
+    document.getElementById('confirmModal').classList.add('active');
+  }
+
+  window.closeConfirmModal = function() {
+    document.getElementById('confirmModal').classList.remove('active');
+    confirmCallback = null;
+  };
+
+  window.executeConfirm = function() {
+    if (confirmCallback) confirmCallback();
+    closeConfirmModal();
+  };
+
+  // ============ RENDER FUNCTIONS ============
+  function renderCategorySelects() {
+    const selects = ['productCategory', 'goCategory', 'returnCategory'];
+    selects.forEach(selId => {
+      const sel = document.getElementById(selId);
+      if (!sel) return;
+      const currentValue = sel.value;
+      sel.innerHTML = '';
+      
+      if (data.categories.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = '-- Chưa có loại hàng --';
+        sel.appendChild(opt);
+      } else {
+        if (selId === 'productCategory') {
+          const opt = document.createElement('option');
+          opt.value = '';
+          opt.textContent = '-- Chọn loại hàng --';
+          sel.appendChild(opt);
+        }
+        data.categories.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.name;
+          sel.appendChild(opt);
+        });
+      }
+      
+      if (currentValue && data.categories.some(c => c.id === currentValue)) {
+        sel.value = currentValue;
+      }
+    });
+  }
+
+  function renderCategoryList() {
+    const container = document.getElementById('categoryList');
+    if (data.categories.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📁</div>Chưa có loại hàng nào</div>';
+      return;
+    }
+    
+    container.innerHTML = data.categories.map(c => `
+      <div class="item-row">
+        <div class="item-info">
+          <div class="item-name">${escapeHtml(c.name)}</div>
+          <div class="item-detail">${data.products.filter(p => p.categoryId === c.id).length} mặt hàng</div>
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-success" onclick="editCategory('${c.id}')">Sửa</button>
+          <button class="btn btn-danger" onclick="deleteCategory('${c.id}')">Xóa</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderProductList() {
+    const container = document.getElementById('productList');
+    
+    if (data.categories.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div>Vui lòng thêm loại hàng trước</div>';
+      return;
+    }
+    
+    let html = '';
+    data.categories.forEach(cat => {
+      const products = data.products.filter(p => p.categoryId === cat.id);
+      const catId = 'cat-prod-' + cat.id;
+      html += `
+        <div class="category-header" id="${catId}" onclick="toggleCategory('${catId}')">
+          <div class="category-name">
+            <span>${escapeHtml(cat.name)} <span class="category-toggle">[${products.length}]</span></span>
+            <span class="category-toggle">▼</span>
+          </div>
+        </div>
+        <div class="item-list">
+      `;
+      
+      if (products.length === 0) {
+        html += '<div class="empty-state" style="padding: 15px;">Chưa có mặt hàng</div>';
+      } else {
+        products.forEach(p => {
+          html += `
+            <div class="item-row">
+              <div class="item-info">
+                <div class="item-name">${escapeHtml(p.name)}</div>
+                <div class="item-detail">${formatCurrency(p.price)} / ${escapeHtml(p.unit)}</div>
+              </div>
+              <div class="item-actions">
+                <button class="btn btn-success" onclick="event.stopPropagation(); editProduct('${p.id}')">Sửa</button>
+                <button class="btn btn-danger" onclick="event.stopPropagation(); deleteProduct('${p.id}')">Xóa</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      
+      html += '</div>';
+    });
+    
+    container.innerHTML = html;
+  }
+
+  window.toggleCategory = function(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('collapsed');
+  };
+
+  function renderGoList() {
+    const container = document.getElementById('goList');
+    
+    if (data.categories.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div>Vui lòng thêm loại hàng trước</div>';
+      return;
+    }
+    
+    let grandTotal = 0;
+    let html = '';
+    
+    data.categories.forEach(cat => {
+      const items = data.goItems.filter(g => g.categoryId === cat.id);
+      if (items.length === 0) return;
+      
+      let catTotal = 0;
+      let itemsHtml = '';
+      
+      items.forEach(item => {
+        const prod = data.products.find(p => p.id === item.productId);
+        const prodName = prod ? prod.name : 'Mặt hàng đã xóa';
+        const unit = prod ? prod.unit : '';
+        const amount = item.quantity * item.price;
+        catTotal += amount;
+        grandTotal += amount;
+        
+        const itemDate = item.dateKey && item.dateKey !== getTodayKey() ? ` · ${item.dateKey}` : '';
+        
+        itemsHtml += `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-name">${escapeHtml(prodName)}</div>
+              <div class="item-detail">${formatNumber(item.quantity)} ${escapeHtml(unit)} × ${formatCurrency(item.price)}${itemDate}</div>
+            </div>
+            <div class="item-amount">${formatCurrency(amount)}</div>
+            <div class="item-actions">
+              <button class="btn btn-danger" onclick="deleteGoItem('${item.id}')">Xóa</button>
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `
+        <div class="category-header" id="cat-go-${cat.id}" onclick="toggleCategory('cat-go-${cat.id}')">
+          <div class="category-name">
+            <span>${escapeHtml(cat.name)} <span class="badge badge-go">ĐI</span></span>
+            <span class="category-total">${formatCurrency(catTotal)}</span>
+          </div>
+        </div>
+        <div class="item-list">${itemsHtml}</div>
+      `;
+    });
+    
+    if (grandTotal === 0) {
+      html = '<div class="empty-state"><div class="empty-state-icon">🚚</div>Chưa có hàng đưa đi nào</div>';
+    } else {
+      html += `
+        <div class="summary-card" style="margin-top: 16px;">
+          <div class="summary-label">TỔNG CỘNG HÀNG ĐI</div>
+          <div class="summary-value">${formatCurrency(grandTotal)}</div>
+        </div>
+      `;
+    }
+    
+    container.innerHTML = html;
+  }
+
+  function renderReturnList() {
+    const container = document.getElementById('returnList');
+    
+    if (data.categories.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div>Vui lòng thêm loại hàng trước</div>';
+      return;
+    }
+    
+    let grandTotal = 0;
+    let html = '';
+    
+    data.categories.forEach(cat => {
+      const items = data.returnItems.filter(r => r.categoryId === cat.id);
+      if (items.length === 0) return;
+      
+      let catTotal = 0;
+      let itemsHtml = '';
+      
+      items.forEach(item => {
+        const prod = data.products.find(p => p.id === item.productId);
+        const prodName = prod ? prod.name : 'Mặt hàng đã xóa';
+        const unit = prod ? prod.unit : '';
+        const amount = item.quantity * item.price;
+        catTotal += amount;
+        grandTotal += amount;
+        
+        const itemDate = item.dateKey && item.dateKey !== getTodayKey() ? ` · ${item.dateKey}` : '';
+        
+        itemsHtml += `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-name">${escapeHtml(prodName)}</div>
+              <div class="item-detail">${formatNumber(item.quantity)} ${escapeHtml(unit)} × ${formatCurrency(item.price)}${itemDate}</div>
+            </div>
+            <div class="item-amount">${formatCurrency(amount)}</div>
+            <div class="item-actions">
+              <button class="btn btn-danger" onclick="deleteReturnItem('${item.id}')">Xóa</button>
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `
+        <div class="category-header return-type" id="cat-ret-${cat.id}" onclick="toggleCategory('cat-ret-${cat.id}')">
+          <div class="category-name">
+            <span>${escapeHtml(cat.name)} <span class="badge badge-return">VỀ</span></span>
+            <span class="category-total">${formatCurrency(catTotal)}</span>
+          </div>
+        </div>
+        <div class="item-list">${itemsHtml}</div>
+      `;
+    });
+    
+    if (grandTotal === 0) {
+      html = '<div class="empty-state"><div class="empty-state-icon">🔄</div>Chưa có hàng trả về nào</div>';
+    } else {
+      html += `
+        <div class="summary-card" style="margin-top: 16px; background: linear-gradient(135deg, var(--danger-soft) 0%, transparent 100%); border-color: rgba(239, 68, 68, 0.3);">
+          <div class="summary-label" style="color: var(--danger);">TỔNG CỘNG HÀNG VỀ</div>
+          <div class="summary-value" style="color: var(--danger);">${formatCurrency(grandTotal)}</div>
+        </div>
+      `;
+    }
+    
+    container.innerHTML = html;
+  }
+
+  function renderSummary() {
+    updateDatePicker();
+    
+    const goItemsOfDay = data.goItems.filter(g => g.dateKey === selectedDateKey);
+    const returnItemsOfDay = data.returnItems.filter(r => r.dateKey === selectedDateKey);
+    
+    let totalGo = 0;
+    const goByProduct = {};
+    goItemsOfDay.forEach(item => {
+      const amount = item.quantity * item.price;
+      totalGo += amount;
+      if (!goByProduct[item.productId]) goByProduct[item.productId] = { qty: 0, amount: 0 };
+      goByProduct[item.productId].qty += item.quantity;
+      goByProduct[item.productId].amount += amount;
+    });
+    
+    let totalReturn = 0;
+    const returnByProduct = {};
+    returnItemsOfDay.forEach(item => {
+      const amount = item.quantity * item.price;
+      totalReturn += amount;
+      if (!returnByProduct[item.productId]) returnByProduct[item.productId] = { qty: 0, amount: 0 };
+      returnByProduct[item.productId].qty += item.quantity;
+      returnByProduct[item.productId].amount += amount;
+    });
+    
+    const totalPayable = totalGo - totalReturn;
+    
+    document.getElementById('statGo').textContent = formatCurrency(totalGo);
+    document.getElementById('statReturn').textContent = formatCurrency(totalReturn);
+    document.getElementById('totalPayable').textContent = formatCurrency(totalPayable);
+    
+    const allProductIds = new Set([
+      ...Object.keys(goByProduct),
+      ...Object.keys(returnByProduct)
+    ]);
+    
+    const container = document.getElementById('productSoldList');
+    
+    if (allProductIds.size === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📊</div>Không có giao dịch nào vào ngày này</div>';
+      return;
+    }
+    
+    let html = '';
+    data.categories.forEach(cat => {
+      const catProducts = data.products.filter(p => p.categoryId === cat.id);
+      let catHtml = '';
+      let catTotalSold = 0;
+      
+      catProducts.forEach(prod => {
+        if (!allProductIds.has(prod.id)) return;
+        
+        const go = goByProduct[prod.id] || { qty: 0, amount: 0 };
+        const ret = returnByProduct[prod.id] || { qty: 0, amount: 0 };
+        const soldQty = go.qty - ret.qty;
+        const soldAmount = go.amount - ret.amount;
+        catTotalSold += soldAmount;
+        
+        catHtml += `
+          <div class="product-sold-item">
+            <div class="product-sold-info">
+              <div class="product-sold-name">${escapeHtml(prod.name)}</div>
+              <div class="product-sold-detail">
+                Đi: ${formatNumber(go.qty)}${prod.unit} · Về: ${formatNumber(ret.qty)}${prod.unit} · Bán: ${formatNumber(soldQty)}${prod.unit}
+              </div>
+            </div>
+            <div class="product-sold-amount ${soldAmount <= 0 ? 'zero' : ''}">
+              ${formatCurrency(soldAmount)}
+            </div>
+          </div>
+        `;
+      });
+      
+      if (catHtml) {
+        html += `
+          <div style="padding: 4px 0 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; color: var(--accent); font-size: 13px;">${escapeHtml(cat.name)}</span>
+              <span style="font-weight: 800; color: var(--accent2); font-size: 14px;">${formatCurrency(catTotalSold)}</span>
+            </div>
+            ${catHtml}
+          </div>
+        `;
+      }
+    });
+    
+    const deletedProductIds = [...allProductIds].filter(id => !data.products.find(p => p.id === id));
+    if (deletedProductIds.length > 0) {
+      let deletedHtml = '';
+      deletedProductIds.forEach(id => {
+        const go = goByProduct[id] || { qty: 0, amount: 0 };
+        const ret = returnByProduct[id] || { qty: 0, amount: 0 };
+        const soldQty = go.qty - ret.qty;
+        const soldAmount = go.amount - ret.amount;
+        
+        deletedHtml += `
+          <div class="product-sold-item">
+            <div class="product-sold-info">
+              <div class="product-sold-name" style="color: var(--muted);">[Mặt hàng đã xóa]</div>
+              <div class="product-sold-detail">
+                Đi: ${formatNumber(go.qty)} · Về: ${formatNumber(ret.qty)} · Bán: ${formatNumber(soldQty)}
+              </div>
+            </div>
+            <div class="product-sold-amount ${soldAmount <= 0 ? 'zero' : ''}">
+              ${formatCurrency(soldAmount)}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `
+        <div style="padding: 4px 0;">
+          <div style="font-weight: 700; color: var(--muted); font-size: 13px; margin-bottom: 6px;">Mặt hàng đã xóa</div>
+          ${deletedHtml}
+        </div>
+      `;
+    }
+    
+    container.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderAll() {
+    renderCategorySelects();
+    renderCategoryList();
+    renderProductList();
+    updateGoProducts();
+    updateReturnProducts();
+    renderGoList();
+    renderReturnList();
+    renderSummary();
+  }
+
+  // ============ TAB NAVIGATION ============
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tab = this.dataset.tab;
+      
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      this.classList.add('active');
+      document.getElementById('tab-' + tab).classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ============ DATE DISPLAY ============
+  function updateDate() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('currentDate').textContent = now.toLocaleDateString('vi-VN', options);
+  }
+
+  // ============ INIT ============
+  loadData();
+  updateDate();
+  updateDatePicker();
+  renderAll();
+  
+  if (data.categories.length === 0) {
+    data.categories = [
+      { id: 'cat_demo_1', name: 'Đồ uống' },
+      { id: 'cat_demo_2', name: 'Thức ăn nhanh' }
+    ];
+    data.products = [
+      { id: 'prod_demo_1', categoryId: 'cat_demo_1', name: 'Nước suối', price: 5000, unit: 'chai' },
+      { id: 'prod_demo_2', categoryId: 'cat_demo_1', name: 'Cà phê sữa', price: 15000, unit: 'ly' },
+      { id: 'prod_demo_3', categoryId: 'cat_demo_2', name: 'Bánh mì', price: 10000, unit: 'cái' }
+    ];
+    saveData();
+    renderAll();
+  }
+})();
+</script>
+
+</body>
+</html>
